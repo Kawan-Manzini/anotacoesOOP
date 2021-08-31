@@ -5,16 +5,35 @@ using System.Text;
 namespace OOP
 {
      //Adicionar um modificador, se não a classe ficara vazia e não conseguiremos chama la 
-    public class Conta
+    public abstract class Conta : IConta 
     {
+
+        //Determinando construtor
+        public Conta(int numero, double limite)
+        {
+            this.Numero = numero;
+            this.Limite = Limite;
+            Conta.TotalContasCriadas++;
+        }
+
+
+
         //Get significa pode ser acessado
         //set significa que vc pd adicionar um valor ao Saldo
-        private double Saldo { get;  set; } // privou outra classe de setar um valor dentro de Saldo
+        protected double Saldo { get;  set; } 
 
         public double Limite { get; private set; }// privou set de Limite pois ja criamos um metodo para determinar um Limite 
 
-        public int Numero { get; set; }
+        public int Numero { get; private set; }
         //Quando instaciamos um modelo estamos criando um objeto
+
+        public static int TotalContasCriadas { get; set;  }
+
+        public static int ProximoTotalContasCriadas()
+        {
+            return Conta.TotalContasCriadas + 1;
+        }
+
 
         // void significa que este metodo não retornará nada 
         public void Deposita(double valor)// metodo para deposito de valor 
@@ -28,7 +47,7 @@ namespace OOP
             this.Limite = valor;
         }
 
-        public bool Saque(double valor)
+        public virtual bool Saque(double valor)
         {
             double SaldoDisponivel = this.ConsultaSaldoDisponivel();
 
@@ -39,7 +58,7 @@ namespace OOP
             }
             this.Saldo -= valor;
             return true;
-        }
+        }  
 
         public double ConsultaSaldoDisponivel() // metodo para consulta de saldo disponivel 
         {
